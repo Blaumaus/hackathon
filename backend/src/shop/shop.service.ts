@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as _pick from 'lodash/pick';
 import { Repository } from 'typeorm';
 import { AquariumBuffs } from './entities/aquariumBuffs.entity';
 import { FisheriesEntity } from './entities/fisheries.entity';
 import { AquariumService } from 'src/aquarium/aquarium.service';
 import { Aquarium } from 'src/aquarium/entities/aquarium.entity';
+import { Fish } from 'src/aquarium/entities/fish.entity';
 
 @Injectable()
 export class ShopService {
@@ -31,7 +33,7 @@ export class ShopService {
     return this.fisheriesRepository.delete(id);
   }
 
-  async findFishery(params: any): Promise<FisheriesEntity[]> {
+  async findFishery(params?: any): Promise<FisheriesEntity[]> {
     return this.fisheriesRepository.find(params);
   }
 
@@ -82,5 +84,21 @@ export class ShopService {
     await this.aquariumService.update(aquarium.id, {
       [consumable.type]: buff,
     });
+  }
+
+  async applyFishToAquarium(
+    aquarium: Aquarium,
+    shopFish: FisheriesEntity,
+  ): Promise<void> {
+    const fish = new Fish();
+    Object.assign(
+      fish,
+      _pick(shopFish, ['price', 'type', 'colour', 'speedMultiplier']),
+    );
+    fish.diesAt = this.aquariumService.generateDiesAt();
+
+    aquarium.fishes.push(fish);
+
+    await this.aquariumService.save(aquarium);
   }
 }
