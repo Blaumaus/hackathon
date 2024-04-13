@@ -5,11 +5,11 @@ import routes from '../constants/routes'
 
 export const auth = {
   authenticated: {
-    selector: (state) => state,
+    auth: true,
     redirectPath: routes.HOME,
   },
   notAuthenticated: {
-    selector: (state) => !state,
+    auth: false,
     redirectPath: routes.AUQARIUM,
   },
 }
@@ -17,7 +17,6 @@ export const auth = {
 export const withAuthentication = (WrappedComponent, authParam) => {
   const WithAuthentication = (props) => {
     const { authenticated, loading } = useContext(UserContext)
-    const auth = authParam.selector(authenticated)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -25,7 +24,7 @@ export const withAuthentication = (WrappedComponent, authParam) => {
         return
       }
 
-      if (!auth) {
+      if (authenticated === authParam.auth) {
         navigate(authParam.redirectPath)
       }
     }, [loading, authenticated])

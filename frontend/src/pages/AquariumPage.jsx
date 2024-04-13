@@ -79,6 +79,7 @@ const Fish = ({ fish, colour, yShift, xDelta, dead }) => {
         dead && 'scale-y-[-1]',
         rotate,
       )}
+      dead={dead}
       style={{
         left: `${xPosition}%`,
         top: `${dead ? yPosition : yPosition + yShift}%`,
