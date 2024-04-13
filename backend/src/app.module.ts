@@ -6,6 +6,8 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { ActionTokensModule } from './action-tokens/action-tokens.module';
 import { ShopModule } from './shop/shop.module';
+import { AquariumGateway } from './web-scokets/aquarium/aquarium.gateway';
+import { ChatGateway } from './web-scokets/chat/chat.gateway';
 
 @Module({
   imports: [
@@ -31,5 +33,6 @@ import { ShopModule } from './shop/shop.module';
     ActionTokensModule,
     ScheduleModule.forRoot(),
   ],
+  providers: [AquariumGateway, ChatGateway],
 })
 export class AppModule {}
