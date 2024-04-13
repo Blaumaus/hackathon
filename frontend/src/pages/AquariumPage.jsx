@@ -62,9 +62,22 @@ const Fish = ({ fish, colour, yShift, xDelta, dead }) => {
     return () => cancelAnimationFrame(requestId.current);
   }, [xSpeed, dead]);
 
+  const rotate = yDirection.current === 1
+    ? xDirection.current === 1
+      ? 'rotate-6'
+      : '-rotate-6'
+    : xDirection.current === 1
+      ? '-rotate-6'
+      : 'rotate-6'
+
   return (
     <FishIcon
-      className={cx('w-12 h-12 absolute', xDirection.current === -1 && 'scale-x-[-1]', dead && 'scale-y-[-1]' )}
+      className={cx(
+        'w-12 h-12 absolute',
+        xDirection.current === -1 && 'scale-x-[-1]',
+        dead && 'scale-y-[-1]',
+        rotate,
+      )}
       style={{
         left: `${xPosition}%`,
         top: `${dead ? yPosition : yPosition + yShift}%`,
