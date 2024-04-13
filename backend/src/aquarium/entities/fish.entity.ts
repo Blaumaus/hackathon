@@ -44,7 +44,6 @@ export class Fish {
   diesAt: Date;
 
   @ManyToOne(() => Aquarium, (aquarium) => aquarium.fishes)
-  @JoinColumn()
   aquarium: Aquarium;
 
   @CreateDateColumn()
