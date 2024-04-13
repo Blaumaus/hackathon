@@ -21,6 +21,17 @@ export class AquariumService {
     return this.aquariumRepository.update(criteria, update);
   }
 
+  async findById(id: string, relations = ['fishes']) {
+    return this.aquariumRepository.findOne({
+      where: { id },
+      relations,
+    });
+  }
+
+  async deleteFish(id: string) {
+    return this.fishRepository.delete(id);
+  }
+
   generateDiesAt(): any {
     const now = new Date();
     const minTime = now.getTime() + 30 * 60 * 1000; // 30 minutes from now in milliseconds
