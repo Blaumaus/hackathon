@@ -11,6 +11,17 @@ export enum Colour {
   emerald = 'emerald',
 }
 
+export const COLOURS = [
+  Colour.red,
+  Colour.green,
+  Colour.blue,
+  Colour.purple,
+  Colour.yellow,
+  Colour.orange,
+  Colour.cyan,
+  Colour.emerald,
+];
+
 export enum Type {
   carp = 'carp',
   sturgeon = 'sturgeon',
@@ -18,6 +29,14 @@ export enum Type {
   goldfish = 'goldfish',
   tang = 'tang',
 }
+
+export const TYPES = [
+  Type.carp,
+  Type.sturgeon,
+  Type.clownfish,
+  Type.goldfish,
+  Type.tang,
+];
 
 @Entity()
 export class FisheriesEntity {

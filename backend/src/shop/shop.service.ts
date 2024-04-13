@@ -29,8 +29,8 @@ export class ShopService {
     return this.fisheriesRepository.update(criteria, update);
   }
 
-  async deleteFishery(id: string): Promise<any> {
-    return this.fisheriesRepository.delete(id);
+  async deleteFishery(params: any): Promise<any> {
+    return this.fisheriesRepository.delete(params);
   }
 
   async findFishery(params?: any): Promise<FisheriesEntity[]> {
@@ -55,8 +55,8 @@ export class ShopService {
     return this.aquariumBuffsRepository.update(criteria, update);
   }
 
-  async deleteBuff(id: string): Promise<any> {
-    return this.aquariumBuffsRepository.delete(id);
+  async deleteBuff(params: any): Promise<any> {
+    return this.aquariumBuffsRepository.delete(params);
   }
 
   async findBuff(params?: any): Promise<AquariumBuffs[]> {
