@@ -27,7 +27,7 @@ export class UserController {
       return null;
     }
 
-    const user = await this.userService.findOneWhere({ id: user_id });
+    const user = await this.userService.findUserById(user_id);
 
     return user;
   }

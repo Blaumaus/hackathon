@@ -6,14 +6,14 @@ import { UserProvider } from './context/userContext';
 
 const App = () => {
   return (
-    <UserProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <UserProvider>
         <Routes>
           <Route path="/" element={<AuthPage />} />
           <Route path="/aquarium" element={<AquariumPage />} />
         </Routes>
-      </BrowserRouter>
-    </UserProvider>
+      </UserProvider>
+    </BrowserRouter>
   );
 };
 
