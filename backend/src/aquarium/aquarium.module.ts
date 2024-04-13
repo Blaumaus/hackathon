@@ -6,10 +6,7 @@ import { Aquarium } from './entities/aquarium.entity';
 import { Fish } from './entities/fish.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Aquarium]),
-    TypeOrmModule.forFeature([Fish]),
-  ],
+  imports: [TypeOrmModule.forFeature([Aquarium, Fish])],
   providers: [AquariumService],
   exports: [AquariumService],
 })

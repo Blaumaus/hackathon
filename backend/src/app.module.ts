@@ -8,6 +8,8 @@ import { ActionTokensModule } from './action-tokens/action-tokens.module';
 import { ShopModule } from './shop/shop.module';
 import { AquariumGateway } from './web-scokets/aquarium/aquarium.gateway';
 import { ChatGateway } from './web-scokets/chat/chat.gateway';
+import { AquariumModule } from './aquarium/aquarium.module';
+import { TaskManagerModule } from './task-manager/task-manager.module';
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { ChatGateway } from './web-scokets/chat/chat.gateway';
     AuthModule,
     UserModule,
     ShopModule,
+    AquariumModule,
+    TaskManagerModule,
     ActionTokensModule,
     ScheduleModule.forRoot(),
   ],

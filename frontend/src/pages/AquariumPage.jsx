@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import InviteModal from '../components/InviteModal';
 import StatusBar from '../components/StatusBar';
+import { Widget } from '../components/RobotWidget';
 
 const AquariumPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,8 +32,7 @@ const AquariumPage = () => {
         </button>
       </div>
       
-      
-
+      <Widget />
       {isModalOpen && <InviteModal onClose={closeModal} />}
     </div>
   );
