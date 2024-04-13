@@ -1,6 +1,6 @@
 import _isEmpty from 'lodash/isEmpty'
 
-import { REFRESH_TOKEN } from 'redux/constants'
+import { REFRESH_TOKEN } from '../constants'
 import { getCookie, setCookie, deleteCookie } from './cookie'
 
 const STORE_REFRESH_TOKEN_FOR = 8467200

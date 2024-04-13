@@ -2,8 +2,8 @@ import axios from 'axios'
 import createAuthRefreshInterceptor from 'axios-auth-refresh'
 import _isEmpty from 'lodash/isEmpty'
 
-import { getAccessToken, removeAccessToken, setAccessToken } from 'utils/accessToken'
-import { getRefreshToken, removeRefreshToken } from 'utils/refreshToken'
+import { getAccessToken, removeAccessToken, setAccessToken } from '../utils/accessToken'
+import { getRefreshToken, removeRefreshToken } from '../utils/refreshToken'
 
 const baseURL = process.env.REACT_APP_API_URL
 

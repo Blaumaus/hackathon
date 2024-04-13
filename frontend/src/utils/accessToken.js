@@ -1,5 +1,5 @@
 import _isEmpty from 'lodash/isEmpty'
-import { TOKEN } from 'constants'
+import { TOKEN } from '../constants'
 import { getCookie, setCookie, deleteCookie } from './cookie'
 
 const STORE_AUTH_TOKEN_FOR = 8467200
