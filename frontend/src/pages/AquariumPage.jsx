@@ -1,7 +1,70 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import cx from 'clsx'
 import InviteModal from '../components/InviteModal';
 import StatusBar from '../components/StatusBar';
 import { Widget } from '../components/RobotWidget';
+
+const FISH_COLOUR_MAP = {
+  red: 'bg-red-400',
+  green: 'bg-green-400',
+  blue: 'bg-blue-400',
+  purple: 'bg-purple-400',
+  yellow: 'bg-yellow-400',
+  orange: 'bg-orange-400',
+  cyan: 'bg-cyan-400',
+  emerald: 'bg-emerald-400',
+}
+
+const Fish = ({ fish, colour, yShift, xDelta }) => {
+  const [xPosition, setXPosition] = useState(3 + xDelta);
+  const xDirection = useRef(1);
+  const [yPosition, setYPosition] = useState(5);
+  const yDirection = useRef(1);
+  const requestId = useRef(null);
+  const xSpeed = 0.5;
+  const ySpeed = 0.2;
+
+  useEffect(() => {
+    const animationLoop = () => {
+      setXPosition(prevPosition => {
+        if (prevPosition >= 97) {
+          xDirection.current = -1;
+        }
+
+        if (prevPosition <= 3) {
+          xDirection.current = 1;
+        }
+
+        return prevPosition + xDirection.current * xSpeed
+      });
+
+      setYPosition(prevPosition => {
+        if (prevPosition >= 20) {
+          yDirection.current = -1;
+        }
+
+        if (prevPosition <= 5) {
+          yDirection.current = 1;
+        }
+
+        return prevPosition + yDirection.current * ySpeed
+      });
+
+      requestId.current = requestAnimationFrame(animationLoop);
+    };
+
+    requestId.current = requestAnimationFrame(animationLoop);
+
+    return () => cancelAnimationFrame(requestId.current);
+  }, [xSpeed]);
+
+  return (
+    <div
+      className={cx("w-4 h-4 rounded-full absolute", colour)}
+      style={{ left: `${xPosition}%`, top: `${yPosition + yShift}%` }}
+    />
+  );
+};
 
 const AquariumPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,8 +85,12 @@ const AquariumPage = () => {
         <StatusBar name="Голод" color="bg-yellow-500" percentage={75} />
         <StatusBar name="Щастя" color="bg-green-500" percentage={90} />
       </div>
-        <div className="bg-blue-200 p-4">
-          Акваріум
+        <div className='flex items-end h-72 border border-solid border-slate-800 mt-6'>
+          <div className="w-full h-5/6 bg-blue-300 animate-pulse opacity-60 relative">
+            <Fish fish={{ id: 'asdf' }} colour={FISH_COLOUR_MAP.red} yShift={20} xDelta={5} />
+            <Fish fish={{ id: 'asdf' }} colour={FISH_COLOUR_MAP.emerald} yShift={45} xDelta={15} />
+            <Fish fish={{ id: 'asdf' }} colour={FISH_COLOUR_MAP.orange} yShift={15} xDelta={50} />
+          </div>
         </div>
         <button className="btn btn-primary absolute top-5 right-5" onClick={handleInviteClick}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
