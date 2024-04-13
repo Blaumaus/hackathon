@@ -9,6 +9,7 @@ const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
   const accessToken = getAccessToken();
   const refreshToken = getRefreshToken();
@@ -52,17 +53,23 @@ const UserProvider = ({ children }) => {
     // eslint-disable-next-line no-unused-expressions
     if ((accessToken && refreshToken) && !authenticated) {
         authMe().then((res) => {
-        updateUser(res)
-        setAuthenticated(true)
-        navigate('/aquarium')
-      }).catch(() => {
-        logout()
-      })
+          updateUser(res)
+          setAuthenticated(true)
+          navigate('/aquarium')
+        }).catch(() => {
+          logout()
+        }).finally(
+          () => {
+            setLoading(false)
+          }
+        )
+    } else {
+      setLoading(false)
     }
   }, [authenticated, accessToken, refreshToken])
 
   return (
-    <UserContext.Provider value={{ user, updateUser, login, register, logout }}>
+    <UserContext.Provider value={{ user, updateUser, login, register, logout, loading }}>
       {children}
     </UserContext.Provider>
   );

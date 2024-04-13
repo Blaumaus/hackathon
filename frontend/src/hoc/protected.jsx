@@ -1,9 +1,7 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { UserContext } from '../context/userContext'
 import { useNavigate } from 'react-router-dom'
 import routes from '../constants/routes'
-
-
 
 export const auth = {
   authenticated: {
@@ -18,15 +16,22 @@ export const auth = {
 
 export const withAuthentication = (WrappedComponent, authParam) => {
   const WithAuthentication = (props) => {
-    const { authenticated } = useContext(UserContext)
+    const { authenticated, loading } = useContext(UserContext)
     const auth = authParam.selector(authenticated)
     const navigate = useNavigate()
 
-    if (!auth) {
-      return () => {
-        navigate(authParam.redirectPath)
-        return null
+    useEffect(() => {
+      if (loading) {
+        return
       }
+
+      if (!auth) {
+        navigate(authParam.redirectPath)
+      }
+    }, [loading, authenticated])
+
+    if (loading) {
+      return null
     }
 
     return <WrappedComponent {...props} />
