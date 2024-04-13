@@ -22,12 +22,12 @@ export class TaskManagerService {
     private readonly aquariumService: AquariumService,
   ) {}
 
-  @Cron(CronExpression.EVERY_5_SECONDS)
+  @Cron(CronExpression.EVERY_5_MINUTES)
   async refreshShopFishes(): Promise<void> {
     // used to remove all current fishes from shop
     const currentFishes = await this.shopService.findFishery();
 
-    const promises = [];
+    const fishes = [];
 
     // generating 10 fishes
     for (let i = 0; i < 10; ++i) {
@@ -37,11 +37,10 @@ export class TaskManagerService {
       fish.speedMultiplier = _random(0.01, 1);
       fish.price = _random(20, 300);
 
-      promises.push(async () => this.shopService.createFishery(fish));
+      fishes.push(fish);
     }
 
-    // todo: maybe refactor this to create multiple fishes with 1 DB call (i.e. insert())
-    await Promise.all(promises);
+    await this.shopService.createFishery(fishes);
 
     await this.shopService.deleteFisheryBuilder({
       id: In(_map(currentFishes, ({ id }) => id)),
@@ -53,7 +52,7 @@ export class TaskManagerService {
     // used to remove all current fishes from shop
     const currentConsumables = await this.shopService.findBuff();
 
-    const promises = [];
+    const consumables = [];
 
     // generating 10 fishes
     for (let i = 0; i < 10; ++i) {
@@ -62,11 +61,10 @@ export class TaskManagerService {
       consumable.buff = _random(0.1, 0.7);
       consumable.type = _sample(CONSUMABLE_TYPES);
 
-      promises.push(async () => this.shopService.createBuff(consumable));
+      consumables.push(consumable);
     }
 
-    // todo: maybe refactor this to create multiple fishes with 1 DB call (i.e. insert())
-    await Promise.all(promises);
+    await this.shopService.createBuff(consumables);
 
     await this.shopService.deleteBuffBuilder({
       id: In(_map(currentConsumables, ({ id }) => id)),

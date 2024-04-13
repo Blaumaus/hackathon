@@ -18,7 +18,7 @@ export class ShopService {
     private readonly aquariumService: AquariumService,
   ) {}
 
-  async createFishery(entity: FisheriesEntity): Promise<FisheriesEntity> {
+  async createFishery(entity: any): Promise<any> {
     return this.fisheriesRepository.save(entity);
   }
 
@@ -52,7 +52,7 @@ export class ShopService {
     });
   }
 
-  async createBuff(entity: AquariumBuffs): Promise<AquariumBuffs> {
+  async createBuff(entity: any): Promise<any> {
     return this.aquariumBuffsRepository.save(entity);
   }
 
