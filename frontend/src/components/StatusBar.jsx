@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'clsx'
 
 const StatusBar = ({ name, percentage }) => {
   let colorClass;
@@ -10,15 +11,14 @@ const StatusBar = ({ name, percentage }) => {
     colorClass = 'bg-green-500'; 
   }
 
-  const progressWidth = `${100 - percentage}%`;
+  const progressWidth = `${percentage}%`;
 
   return (
     <div className="flex justify-center space-x-4">
       <div className="text-lg">{name}</div>
-      <div className={`border border-gray-400 w-24 h-8 relative overflow-hidden ${colorClass}`}>
-        <div style={{ width: progressWidth }} className="h-full bg-white"></div>
+      <div className='border border-gray-400 w-24 h-8 relative overflow-hidden bg-white'>
+        <div style={{ width: progressWidth }} className={cx("h-full", colorClass)}></div>
       </div>
-      <div className={`text-lg ${colorClass}`}></div>
     </div>
   );
 };
