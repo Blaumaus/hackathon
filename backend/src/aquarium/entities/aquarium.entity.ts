@@ -1,5 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 import { Fish } from './fish.entity';
+import { User } from '../../user/entity/user.entity';
 
 @Entity()
 export class Aquarium {
@@ -28,4 +35,7 @@ export class Aquarium {
     cascade: true,
   })
   fishes: Fish[];
+
+  @OneToOne(() => User, (user) => user.aquarium)
+  user: User;
 }

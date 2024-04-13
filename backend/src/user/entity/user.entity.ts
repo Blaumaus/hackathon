@@ -4,9 +4,11 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   JoinTable,
+  OneToOne,
 } from 'typeorm';
 import { ActionToken } from '../../action-tokens/action-token.entity';
 import { RefreshToken } from './refresh-token.entity';
+import { Aquarium } from '../../aquarium/entities/aquarium.entity';
 
 @Entity()
 export class User {
@@ -31,4 +33,7 @@ export class User {
 
   @Column('varchar', { length: 60, default: '' })
   nickname: string;
+
+  @OneToOne(() => Aquarium, (aquarium) => aquarium.user)
+  aquarium: Aquarium;
 }
