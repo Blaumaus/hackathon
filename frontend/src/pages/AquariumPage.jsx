@@ -5,10 +5,10 @@ import cx from 'clsx'
 import { Widget } from '../components/RobotWidget';
 import { FishIcon } from '../icons/FishIcon';
 
-const Fish = ({ fish, colour, yShift, xDelta }) => {
+const Fish = ({ fish, colour, yShift, xDelta, dead }) => {
   const [xPosition, setXPosition] = useState(3 + xDelta);
   const xDirection = useRef(1);
-  const [yPosition, setYPosition] = useState(5);
+  const [yPosition, setYPosition] = useState(dead ? -5 : 5);
   const yDirection = useRef(1);
   const requestId = useRef(null);
   const xSpeed = 0.5;
@@ -16,29 +16,43 @@ const Fish = ({ fish, colour, yShift, xDelta }) => {
 
   useEffect(() => {
     const animationLoop = () => {
-      setXPosition(prevPosition => {
-        if (prevPosition >= 90) {
-          xDirection.current = -1;
-        }
-
-        if (prevPosition <= 3) {
-          xDirection.current = 1;
-        }
-
-        return prevPosition + xDirection.current * xSpeed
-      });
-
-      setYPosition(prevPosition => {
-        if (prevPosition >= 20) {
-          yDirection.current = -1;
-        }
-
-        if (prevPosition <= 5) {
-          yDirection.current = 1;
-        }
-
-        return prevPosition + yDirection.current * ySpeed
-      });
+      if (dead) {
+        setYPosition(prevPosition => {
+          if (prevPosition >= -5) {
+            yDirection.current = -1;
+          }
+  
+          if (prevPosition <= -8) {
+            yDirection.current = 1;
+          }
+  
+          return prevPosition + yDirection.current * 0.05
+        });
+      } else {
+        setXPosition(prevPosition => {
+          if (prevPosition >= 90) {
+            xDirection.current = -1;
+          }
+  
+          if (prevPosition <= 3) {
+            xDirection.current = 1;
+          }
+  
+          return prevPosition + xDirection.current * xSpeed
+        });
+  
+        setYPosition(prevPosition => {
+          if (prevPosition >= 20) {
+            yDirection.current = -1;
+          }
+  
+          if (prevPosition <= 5) {
+            yDirection.current = 1;
+          }
+  
+          return prevPosition + yDirection.current * ySpeed
+        });
+      }
 
       requestId.current = requestAnimationFrame(animationLoop);
     };
@@ -46,14 +60,14 @@ const Fish = ({ fish, colour, yShift, xDelta }) => {
     requestId.current = requestAnimationFrame(animationLoop);
 
     return () => cancelAnimationFrame(requestId.current);
-  }, [xSpeed]);
+  }, [xSpeed, dead]);
 
   return (
     <FishIcon
-      className={cx('w-12 h-12 absolute', xDirection.current === -1 && 'scale-x-[-1]')}
+      className={cx('w-12 h-12 absolute', xDirection.current === -1 && 'scale-x-[-1]', dead && 'scale-y-[-1]' )}
       style={{
         left: `${xPosition}%`,
-        top: `${yPosition + yShift}%`,
+        top: `${dead ? yPosition : yPosition + yShift}%`,
       }}
       colour={colour}
     />
@@ -81,7 +95,7 @@ const AquariumPage = () => {
       </div>
         <div className='flex items-end h-72 border border-solid border-slate-800 mt-6'>
           <div className="w-full h-5/6 bg-blue-300 animate-pulse opacity-60 relative">
-            <Fish fish={{ id: 'asdf' }} colour='red' yShift={20} xDelta={5} />
+            <Fish fish={{ id: 'asdf' }} colour='red' yShift={20} xDelta={5} dead />
             <Fish fish={{ id: 'asdf' }} colour='emerald' yShift={45} xDelta={15} />
             <Fish fish={{ id: 'asdf' }} colour='yellow' yShift={15} xDelta={50} />
           </div>
