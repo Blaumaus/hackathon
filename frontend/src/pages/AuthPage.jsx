@@ -2,19 +2,20 @@ import React, { useState, useContext } from 'react';
 import { GradientButton } from '../components/GradientButton';
 import { register, login } from '../api';
 import { UserContext } from '../context/userContext';
+import { withAuthentication, auth } from '../hoc/protected';
 
 const AuthPage = () => {
  const [username, setUsername] = useState('');
  const [password, setPassword] = useState('');
  const [isLogin, setIsLogin] = useState(true);
-const { updateUser, login, register } = useContext(UserContext);
+ const { login, register } = useContext(UserContext);
 
  const handleSubmit = (e) => {
    e.preventDefault();
     if (isLogin) {
-      login({ username, password });
+      login({ nickname: username, password });
     } else {
-      register({ username, password });
+      register({ nickname: username, password });
     }
  };
 
@@ -73,4 +74,4 @@ const { updateUser, login, register } = useContext(UserContext);
  );
 };
 
-export default AuthPage;
+export default withAuthentication(AuthPage, auth.notAuthenticated);

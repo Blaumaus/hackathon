@@ -99,8 +99,8 @@ export class AuthService {
   }
 
   public async createUnverifiedUser(
-    password: string,
     nickname: string,
+    password: string,
   ): Promise<User> {
     const hashedPassword = await this.hashPassword(password);
 

@@ -1,8 +1,9 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { login, register, authMe } from '../api';
+import { login as loginApi, register as registerApi, authMe } from '../api';
 import { setAccessToken, getAccessToken } from '../utils/accessToken';
 import { setRefreshToken, getRefreshToken } from '../utils/refreshToken';
 import { setItem } from '../utils/localstorage';
+import { useNavigate } from 'react-router-dom';
 
 const UserContext = createContext();
 
@@ -11,26 +12,31 @@ const UserProvider = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(false);
   const accessToken = getAccessToken();
   const refreshToken = getRefreshToken();
+  const navigate = useNavigate();
 
   const updateUser = (newUserData) => {
     setUser(newUserData);
   };
 
   const login = (newUserData) => {
-    login(newUserData).then((res) => {
+    loginApi(newUserData).then((res) => {
       setAccessToken(res.accessToken);
       setRefreshToken(res.refreshToken);
       updateUser(res.user);
       setAuthenticated(true);
+      navigate('/aquarium');
+    }).catch(() => {
+      alert('Invalid credentials');
     });
   };
 
   const register = (newUserData) => {
-    register(newUserData).then((res) => {
+    registerApi(newUserData).then((res) => {
       setAccessToken(res.accessToken);
       setRefreshToken(res.refreshToken);
       updateUser(res.user);
       setAuthenticated(true);
+      navigate('/aquarium');
     });
   };
 
@@ -39,21 +45,21 @@ const UserProvider = ({ children }) => {
     setRefreshToken(null);
     setItem('user', null);
     updateUser(null);
+    navigate('/');
   }
-
+;
   useEffect(() => {
     // eslint-disable-next-line no-unused-expressions
-    (async () => {
-      if ((accessToken && refreshToken) && !authenticated) {
-        try {
-          const me = await authMe()
-          updateUser(me)
-        } catch (e) {
-          logout()
-        }
-      }
-    })
-  }, [authenticated]);
+    if ((accessToken && refreshToken) && !authenticated) {
+        authMe().then((res) => {
+        updateUser(res)
+        setAuthenticated(true)
+        navigate('/aquarium')
+      }).catch(() => {
+        logout()
+      })
+    }
+  }, [authenticated, accessToken, refreshToken])
 
   return (
     <UserContext.Provider value={{ user, updateUser, login, register, logout }}>

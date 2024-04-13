@@ -37,7 +37,9 @@ export class AuthController {
     }
 
     if (body.nickname === body.password) {
-      throw new ConflictException('Password should not be the same as nickname');
+      throw new ConflictException(
+        'Password should not be the same as nickname',
+      );
     }
 
     const newUser = await this.authService.createUnverifiedUser(
@@ -66,7 +68,10 @@ export class AuthController {
     refreshToken: string;
     user: User;
   }> {
-    const user = await this.authService.validateUser(body.nickname, body.password);
+    const user = await this.authService.validateUser(
+      body.nickname,
+      body.password,
+    );
 
     if (!user) {
       throw new ConflictException('Invalid credentials');
