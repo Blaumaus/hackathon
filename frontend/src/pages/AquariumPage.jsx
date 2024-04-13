@@ -4,6 +4,7 @@ import StatusBar from '../components/StatusBar';
 import cx from 'clsx'
 import { Widget } from '../components/RobotWidget';
 import { FishIcon } from '../icons/FishIcon';
+import { auth, withAuthentication } from '../hoc/protected';
 
 const Fish = ({ fish, colour, yShift, xDelta, dead }) => {
   const [xPosition, setXPosition] = useState(3 + xDelta);
@@ -113,4 +114,4 @@ const AquariumPage = () => {
   );
 };
 
-export default AquariumPage;
+export default withAuthentication(AquariumPage, auth.authenticated);
