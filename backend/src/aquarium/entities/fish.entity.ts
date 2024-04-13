@@ -4,6 +4,7 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  CreateDateColumn,
 } from 'typeorm';
 
 import { Aquarium } from './aquarium.entity';
@@ -45,4 +46,7 @@ export class Fish {
   @ManyToOne(() => Aquarium, (aquarium) => aquarium.fishes)
   @JoinColumn()
   aquarium: Aquarium;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }
