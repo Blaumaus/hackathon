@@ -16,6 +16,12 @@ export class User {
   @Column('varchar', { length: 60, default: '' })
   password: string;
 
+  @Column({
+    type: 'integer',
+    default: 50,
+  })
+  money: number;
+
   @OneToMany(() => ActionToken, (actionToken) => actionToken.user)
   actionTokens: ActionToken[];
 

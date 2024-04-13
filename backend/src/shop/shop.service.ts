@@ -53,7 +53,7 @@ export class ShopService {
     return this.aquariumBuffsRepository.delete(id);
   }
 
-  async findBuff(params: any): Promise<AquariumBuffs[]> {
+  async findBuff(params?: any): Promise<AquariumBuffs[]> {
     return this.aquariumBuffsRepository.find(params);
   }
 
