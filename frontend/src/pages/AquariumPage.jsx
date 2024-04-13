@@ -5,6 +5,8 @@ import cx from 'clsx'
 import { Widget } from '../components/RobotWidget';
 import { FishIcon } from '../icons/FishIcon';
 import { auth, withAuthentication } from '../hoc/protected';
+import { getAquariumStats } from '../api';
+import _map from 'lodash/map';
 
 const Fish = ({ fish, colour, yShift, xDelta, dead }) => {
   const [xPosition, setXPosition] = useState(3 + xDelta);
@@ -91,6 +93,33 @@ const Fish = ({ fish, colour, yShift, xDelta, dead }) => {
 };
 
 const AquariumPage = () => {
+  const [auqriumStats, setAuqriumStats] = useState({
+    cleanliness: 0,
+    happiness: 0,
+    hunger: 0,
+  });
+  const [fishes, setFishes] = useState([]);
+
+  useEffect(() => {
+    getAquariumStats()
+      .then((response) => {
+        setAuqriumStats(response.aquariumStatus);
+        setFishes(response.fishes);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    setInterval(() => {
+      getAquariumStats()
+        .then((response) => {
+          setAuqriumStats(response.aquariumStatus);
+          setFishes(response.fishes);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }, 5000)
+  }, []);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleInviteClick = () => {
@@ -111,9 +140,16 @@ const AquariumPage = () => {
       </div>
         <div className='flex items-end h-72 border border-solid border-slate-800 mt-6'>
           <div className="w-full h-5/6 bg-blue-300 animate-pulse opacity-60 relative">
-            <Fish fish={{ id: 'asdf' }} colour='red' yShift={20} xDelta={5} dead />
-            <Fish fish={{ id: 'asdf', type: 'clownfish' }} colour='emerald' yShift={45} xDelta={15} />
-            <Fish fish={{ id: 'asdf', type: 'sturgeon' }} colour='yellow' yShift={15} xDelta={50} />
+            {_map(fishes,(fish) => (
+              <Fish
+                key={fish.id}
+                fish={fish}
+                colour={fish.colour}
+                yShift={fish.speedMultiplier / 2}
+                xDelta={fish.speedMultiplier}
+                dead={fish.isDead}
+              />
+            ))}
           </div>
         </div>
         <button className="btn btn-primary absolute top-5 right-5" onClick={handleInviteClick}>
