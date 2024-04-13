@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GradientButton } from './GradientButton';
+import { GradientButton } from '../components/GradientButton';
 
 const AuthPage = () => {
  const [username, setUsername] = useState('');
