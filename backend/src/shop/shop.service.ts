@@ -33,6 +33,14 @@ export class ShopService {
     return this.fisheriesRepository.delete(params);
   }
 
+  async deleteFisheryBuilder(where: any): Promise<any> {
+    return this.fisheriesRepository
+      .createQueryBuilder()
+      .delete()
+      .where(where)
+      .execute();
+  }
+
   async findFishery(params?: any): Promise<FisheriesEntity[]> {
     return this.fisheriesRepository.find(params);
   }
@@ -57,6 +65,14 @@ export class ShopService {
 
   async deleteBuff(params: any): Promise<any> {
     return this.aquariumBuffsRepository.delete(params);
+  }
+
+  async deleteBuffBuilder(where: any): Promise<any> {
+    return this.aquariumBuffsRepository
+      .createQueryBuilder()
+      .delete()
+      .where(where)
+      .execute();
   }
 
   async findBuff(params?: any): Promise<AquariumBuffs[]> {

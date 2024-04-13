@@ -22,7 +22,7 @@ export class TaskManagerService {
     private readonly aquariumService: AquariumService,
   ) {}
 
-  @Cron(CronExpression.EVERY_5_MINUTES)
+  @Cron(CronExpression.EVERY_5_SECONDS)
   async refreshShopFishes(): Promise<void> {
     // used to remove all current fishes from shop
     const currentFishes = await this.shopService.findFishery();
@@ -43,10 +43,8 @@ export class TaskManagerService {
     // todo: maybe refactor this to create multiple fishes with 1 DB call (i.e. insert())
     await Promise.all(promises);
 
-    await this.shopService.deleteFishery({
-      where: {
-        id: In(_map(currentFishes, ({ id }) => id)),
-      },
+    await this.shopService.deleteFisheryBuilder({
+      id: In(_map(currentFishes, ({ id }) => id)),
     });
   }
 
@@ -70,10 +68,8 @@ export class TaskManagerService {
     // todo: maybe refactor this to create multiple fishes with 1 DB call (i.e. insert())
     await Promise.all(promises);
 
-    await this.shopService.deleteBuff({
-      where: {
-        id: In(_map(currentConsumables, ({ id }) => id)),
-      },
+    await this.shopService.deleteBuffBuilder({
+      id: In(_map(currentConsumables, ({ id }) => id)),
     });
   }
 
