@@ -12,4 +12,8 @@ export class AquariumService {
     @InjectRepository(Fish)
     private fishRepository: Repository<Fish>,
   ) {}
+
+  async update(criteria: any, update: Partial<Aquarium>): Promise<any> {
+    return this.aquariumRepository.update(criteria, update);
+  }
 }

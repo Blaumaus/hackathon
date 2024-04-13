@@ -32,9 +32,10 @@ export class UserService {
     });
   }
 
-  public async findUserById(userId: string) {
+  public async findUserById(userId: string, relations = ['aquarium']) {
     return this.usersRepository.findOne({
       where: { id: userId },
+      relations,
     });
   }
 

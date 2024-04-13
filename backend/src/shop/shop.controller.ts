@@ -62,6 +62,6 @@ export class ShopController {
       money: user.money - consumable.price,
     });
 
-    // todo: apply consumable to user's aquarium
+    await this.shopService.applyConsumableToAquarium(user.aquarium, consumable);
   }
 }

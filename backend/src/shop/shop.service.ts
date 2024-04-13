@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AquariumBuffs } from './entities/aquariumBuffs.entity';
 import { FisheriesEntity } from './entities/fisheries.entity';
+import { AquariumService } from 'src/aquarium/aquarium.service';
+import { Aquarium } from 'src/aquarium/entities/aquarium.entity';
 
 @Injectable()
 export class ShopService {
@@ -11,6 +13,7 @@ export class ShopService {
     private aquariumBuffsRepository: Repository<AquariumBuffs>,
     @InjectRepository(FisheriesEntity)
     private fisheriesRepository: Repository<FisheriesEntity>,
+    private readonly aquariumService: AquariumService,
   ) {}
 
   async createFishery(entity: FisheriesEntity): Promise<FisheriesEntity> {
@@ -62,6 +65,22 @@ export class ShopService {
     return this.aquariumBuffsRepository.findOne({
       where,
       ...params,
+    });
+  }
+
+  async applyConsumableToAquarium(
+    aquarium: Aquarium,
+    consumable: AquariumBuffs,
+  ): Promise<void> {
+    let buff =
+      aquarium[consumable.type] + aquarium[consumable.type] * consumable.buff;
+
+    if (buff > 1) {
+      buff = 1;
+    }
+
+    await this.aquariumService.update(aquarium.id, {
+      [consumable.type]: buff,
     });
   }
 }
