@@ -5,6 +5,7 @@ import {
   OneToMany,
   JoinTable,
   OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { ActionToken } from '../../action-tokens/action-token.entity';
 import { RefreshToken } from './refresh-token.entity';
@@ -35,5 +36,6 @@ export class User {
   nickname: string;
 
   @OneToOne(() => Aquarium, (aquarium) => aquarium.user)
+  @JoinColumn()
   aquarium: Aquarium;
 }
