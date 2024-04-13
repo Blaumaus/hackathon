@@ -73,11 +73,12 @@ const Fish = ({ fish, colour, yShift, xDelta, dead }) => {
 
   return (
     <FishIcon
+      type={fish.type}
       className={cx(
         'w-12 h-12 absolute',
         xDirection.current === -1 && 'scale-x-[-1]',
         dead && 'scale-y-[-1]',
-        rotate,
+        !dead && rotate,
       )}
       style={{
         left: `${xPosition}%`,
@@ -110,8 +111,8 @@ const AquariumPage = () => {
         <div className='flex items-end h-72 border border-solid border-slate-800 mt-6'>
           <div className="w-full h-5/6 bg-blue-300 animate-pulse opacity-60 relative">
             <Fish fish={{ id: 'asdf' }} colour='red' yShift={20} xDelta={5} dead />
-            <Fish fish={{ id: 'asdf' }} colour='emerald' yShift={45} xDelta={15} />
-            <Fish fish={{ id: 'asdf' }} colour='yellow' yShift={15} xDelta={50} />
+            <Fish fish={{ id: 'asdf', type: 'clownfish' }} colour='emerald' yShift={45} xDelta={15} />
+            <Fish fish={{ id: 'asdf', type: 'sturgeon' }} colour='yellow' yShift={15} xDelta={50} />
           </div>
         </div>
         <button className="btn btn-primary absolute top-5 right-5" onClick={handleInviteClick}>
@@ -127,4 +128,5 @@ const AquariumPage = () => {
   );
 };
 
-export default withAuthentication(AquariumPage, auth.authenticated);
+// export default withAuthentication(AquariumPage, auth.authenticated);
+export default AquariumPage
