@@ -1,19 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import cx from 'clsx'
 import InviteModal from '../components/InviteModal';
 import StatusBar from '../components/StatusBar';
+import cx from 'clsx'
 import { Widget } from '../components/RobotWidget';
-
-const FISH_COLOUR_MAP = {
-  red: 'bg-red-400',
-  green: 'bg-green-400',
-  blue: 'bg-blue-400',
-  purple: 'bg-purple-400',
-  yellow: 'bg-yellow-400',
-  orange: 'bg-orange-400',
-  cyan: 'bg-cyan-400',
-  emerald: 'bg-emerald-400',
-}
+import { FishIcon } from '../icons/FishIcon';
 
 const Fish = ({ fish, colour, yShift, xDelta }) => {
   const [xPosition, setXPosition] = useState(3 + xDelta);
@@ -27,7 +17,7 @@ const Fish = ({ fish, colour, yShift, xDelta }) => {
   useEffect(() => {
     const animationLoop = () => {
       setXPosition(prevPosition => {
-        if (prevPosition >= 97) {
+        if (prevPosition >= 90) {
           xDirection.current = -1;
         }
 
@@ -59,11 +49,15 @@ const Fish = ({ fish, colour, yShift, xDelta }) => {
   }, [xSpeed]);
 
   return (
-    <div
-      className={cx("w-4 h-4 rounded-full absolute", colour)}
-      style={{ left: `${xPosition}%`, top: `${yPosition + yShift}%` }}
+    <FishIcon
+      className={cx('w-12 h-12 absolute', xDirection.current === -1 && 'scale-x-[-1]')}
+      style={{
+        left: `${xPosition}%`,
+        top: `${yPosition + yShift}%`,
+      }}
+      colour={colour}
     />
-  );
+  )
 };
 
 const AquariumPage = () => {
@@ -87,9 +81,9 @@ const AquariumPage = () => {
       </div>
         <div className='flex items-end h-72 border border-solid border-slate-800 mt-6'>
           <div className="w-full h-5/6 bg-blue-300 animate-pulse opacity-60 relative">
-            <Fish fish={{ id: 'asdf' }} colour={FISH_COLOUR_MAP.red} yShift={20} xDelta={5} />
-            <Fish fish={{ id: 'asdf' }} colour={FISH_COLOUR_MAP.emerald} yShift={45} xDelta={15} />
-            <Fish fish={{ id: 'asdf' }} colour={FISH_COLOUR_MAP.orange} yShift={15} xDelta={50} />
+            <Fish fish={{ id: 'asdf' }} colour='red' yShift={20} xDelta={5} />
+            <Fish fish={{ id: 'asdf' }} colour='emerald' yShift={45} xDelta={15} />
+            <Fish fish={{ id: 'asdf' }} colour='yellow' yShift={15} xDelta={50} />
           </div>
         </div>
         <button className="btn btn-primary absolute top-5 right-5" onClick={handleInviteClick}>
