@@ -9,6 +9,7 @@ export class ShopService {
   constructor(
     @InjectRepository(AquariumBuffs)
     private aquariumBuffsRepository: Repository<AquariumBuffs>,
+    @InjectRepository(FisheriesEntity)
     private fisheriesRepository: Repository<FisheriesEntity>,
   ) {}
 
