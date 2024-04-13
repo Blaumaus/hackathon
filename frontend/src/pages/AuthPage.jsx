@@ -1,15 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { GradientButton } from '../components/GradientButton';
+import { register, login } from '../api';
+import { UserContext } from '../context/userContext';
 
 const AuthPage = () => {
  const [username, setUsername] = useState('');
  const [password, setPassword] = useState('');
  const [isLogin, setIsLogin] = useState(true);
+const { updateUser, login, register } = useContext(UserContext);
 
  const handleSubmit = (e) => {
    e.preventDefault();
-   console.log('Username:', username);
-   console.log('Password:', password);
+    if (isLogin) {
+      login({ username, password });
+    } else {
+      register({ username, password });
+    }
  };
 
  const toggleAuth = () => {

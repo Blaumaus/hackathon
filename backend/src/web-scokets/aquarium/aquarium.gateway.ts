@@ -8,44 +8,44 @@ import * as dayjs from 'dayjs';
 
 @WebSocketGateway()
 export class AquariumGateway {
-  constructor(
-    @InjectRepository(Aquarium)
-    private readonly aquariumRepository: Repository<Aquarium>,
-    private readonly userService: UserService,
-  ) {}
+  // constructor(
+  //   @InjectRepository(Aquarium)
+  //   private readonly aquariumRepository: Repository<Aquarium>,
+  //   private readonly userService: UserService,
+  // ) {}
 
-  @SubscribeMessage('getAquariums')
-  async getAquariums(client: Socket, aquariumId: string) {
-    const token = client.handshake.headers['authorization'];
-    const user = await this.userService.findOneWhere({ id: token });
+  // @SubscribeMessage('getAquariums')
+  // async getAquariums(client: Socket, aquariumId: string) {
+  //   const token = client.handshake.headers['authorization'];
+  //   const user = await this.userService.findOneWhere({ id: token });
 
-    if (!user) {
-      return;
-    }
+  //   if (!user) {
+  //     return;
+  //   }
 
-    const aquariums = await this.aquariumRepository.find({
-      where: { user: user, id: aquariumId },
-      relations: ['fishes'],
-    });
+  //   const aquariums = await this.aquariumRepository.find({
+  //     where: { user: user, id: aquariumId },
+  //     relations: ['fishes'],
+  //   });
 
-    const response = aquariums.map((aquarium) => ({
-      id: aquarium.id,
-      aquariumStatus: {
-        happiness: aquarium.happiness,
-        hunger: aquarium.hunger,
-        cleanliness: aquarium.cleanliness,
-      },
-      fishes: aquarium.fishes.map((fish) => ({
-        id: fish.id,
-        lived: dayjs().diff(fish.createdAt, 'second'),
-        speedMultiplier: fish.speedMultiplier,
-        diesAt: fish.diesAt,
-        colour: fish.colour,
-        type: fish.type,
-        sellPrice: fish.price,
-      })),
-    }));
+  //   const response = aquariums.map((aquarium) => ({
+  //     id: aquarium.id,
+  //     aquariumStatus: {
+  //       happiness: aquarium.happiness,
+  //       hunger: aquarium.hunger,
+  //       cleanliness: aquarium.cleanliness,
+  //     },
+  //     fishes: aquarium.fishes.map((fish) => ({
+  //       id: fish.id,
+  //       lived: dayjs().diff(fish.createdAt, 'second'),
+  //       speedMultiplier: fish.speedMultiplier,
+  //       diesAt: fish.diesAt,
+  //       colour: fish.colour,
+  //       type: fish.type,
+  //       sellPrice: fish.price,
+  //     })),
+  //   }));
 
-    client.emit('aquariums', response);
-  }
+  //   client.emit('aquariums', response);
+  // }
 }
