@@ -13,10 +13,14 @@ import { TYPES as CONSUMABLE_TYPES } from 'src/shop/entities/aquariumBuffs.entit
 import { ShopService } from 'src/shop/shop.service';
 import { In } from 'typeorm';
 import { AquariumBuffs } from 'src/shop/entities/aquariumBuffs.entity';
+import { AquariumService } from 'src/aquarium/aquarium.service';
 
 @Injectable()
 export class TaskManagerService {
-  constructor(private readonly shopService: ShopService) {}
+  constructor(
+    private readonly shopService: ShopService,
+    private readonly aquariumService: AquariumService,
+  ) {}
 
   @Cron(CronExpression.EVERY_5_MINUTES)
   async refreshShopFishes(): Promise<void> {
@@ -71,5 +75,27 @@ export class TaskManagerService {
         id: In(_map(currentConsumables, ({ id }) => id)),
       },
     });
+  }
+
+  @Cron(CronExpression.EVERY_MINUTE)
+  async updateAquariumStatus(): Promise<void> {
+    const aquariums = await this.aquariumService.find();
+
+    const promises = [];
+
+    for (let i = 0; i < aquariums.length; ++i) {
+      const aquarium = aquariums[i];
+
+      promises.push(async () =>
+        this.aquariumService.update(aquarium.id, {
+          happiness: aquarium.happiness - _random(0, 0.03),
+          cleanliness: aquarium.cleanliness - _random(0, 0.03),
+          hunger: aquarium.hunger - _random(0, 0.03),
+        }),
+      );
+    }
+
+    // todo: maybe refactor this to create multiple fishes with 1 DB call (i.e. insert())
+    await Promise.all(promises);
   }
 }

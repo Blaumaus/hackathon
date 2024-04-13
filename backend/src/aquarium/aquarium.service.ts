@@ -21,7 +21,11 @@ export class AquariumService {
     return this.aquariumRepository.update(criteria, update);
   }
 
-  async findById(id: string, relations = ['fishes']) {
+  async find(criteria?: any): Promise<Aquarium[]> {
+    return this.aquariumRepository.find(criteria);
+  }
+
+  async findById(id: string, relations = ['fishes']): Promise<Aquarium> {
     return this.aquariumRepository.findOne({
       where: { id },
       relations,
