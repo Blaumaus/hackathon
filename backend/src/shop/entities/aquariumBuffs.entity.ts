@@ -6,6 +6,12 @@ export enum ConsumableType {
   hunger = 'hunger',
 }
 
+export const TYPES = [
+  ConsumableType.happiness,
+  ConsumableType.cleanliness,
+  ConsumableType.hunger,
+];
+
 @Entity()
 export class AquariumBuffs {
   @PrimaryGeneratedColumn('uuid')
