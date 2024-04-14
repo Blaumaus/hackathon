@@ -134,7 +134,7 @@ const AquariumPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center h-screen bg-no-repeat bg-cover" style={{ backgroundImage: 'url("/assets/table.jpg")' }}>
+    <div className="flex flex-col items-center h-screen bg-no-repeat bg-cover" style={{ backgroundImage: 'url("/assets/table.png")' }}>
       <div className="absolute top-4 left-4 bg-white bg-opacity-80 p-4 rounded-lg shadow-lg z-10">
         <div className="flex flex-col space-y-2 text-gray-800">
           <StatusBar name="Чистота" color="bg-blue-500" percentage={auqriumStats.cleanliness * 100} />
@@ -151,7 +151,7 @@ const AquariumPage = () => {
         </button>
       </div>
       <div className="flex-grow w-full max-w-5xl mt-80">
-        <div className='flex items-end h-96 border border-solid border-slate-800 bg-blue-300 rounded-lg overflow-hidden'>
+        <div className='flex items-end h-[480px] border border-solid border-slate-800 bg-blue-300 rounded-lg overflow-hidden'>
           <div className="w-full h-3/4 animate-pulse opacity-60 relative">
             {_map(fishes, (fish, index) => (
               <Fish
