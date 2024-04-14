@@ -14,12 +14,21 @@ import { UseGuards } from '@nestjs/common';
 import { JwtRefreshTokenGuard } from './guards/jwt-refresh-token.guard';
 import { CurrentUserId, CurrentUser } from './decorators';
 import * as _isString from 'lodash/isString';
+import {
+  FisheriesEntity,
+  COLOURS,
+  TYPES,
+} from 'src/shop/entities/fisheries.entity';
+import * as _sample from 'lodash/sample';
+import * as _random from 'lodash/random';
+import { ShopService } from 'src/shop/shop.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UserService,
+    private readonly shopService: ShopService,
   ) {}
 
   @Post('register')
@@ -48,6 +57,22 @@ export class AuthController {
     );
 
     const jwtTokens = await this.authService.generateJwtTokens(newUser.id);
+
+    const fishes = [];
+    for (let i = 0; i < 3; ++i) {
+      const fish = new FisheriesEntity();
+      fish.colour = _sample(COLOURS);
+      fish.type = _sample(TYPES);
+      fish.speedMultiplier = _random(0.01, 1);
+      fish.price = _random(20, 300);
+
+      fishes.push(fish);
+    }
+
+    await this.shopService.applyFishToAquarium({
+      aquarium: null,
+      fishes: [],
+    });
 
     return {
       ...jwtTokens,

@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Aquarium } from './entities/aquarium.entity';
 import { Fish } from './entities/fish.entity';
+import dayjs from 'dayjs';
 
 @Injectable()
 export class AquariumService {
@@ -13,7 +14,7 @@ export class AquariumService {
     private fishRepository: Repository<Fish>,
   ) {}
 
-  async save(aquarium: Aquarium): Promise<any> {
+  async save(aquarium: Omit<Aquarium, 'id'>): Promise<Aquarium> {
     return this.aquariumRepository.save(aquarium);
   }
 
@@ -43,5 +44,33 @@ export class AquariumService {
     const randomTime =
       Math.floor(Math.random() * (maxTime - minTime + 1)) + minTime;
     return new Date(randomTime);
+  }
+
+  async getAquariumStats() {
+    const aquarium = await this.aquariumRepository.find({
+      relations: ['fishes'],
+    })[0];
+
+    if (!aquarium) {
+      return null;
+    }
+
+    return {
+      id: aquarium.id,
+      aquariumStatus: {
+        happiness: aquarium.happiness,
+        hunger: aquarium.hunger,
+        cleanliness: aquarium.cleanliness,
+      },
+      fishes: aquarium.fishes.map((fish) => ({
+        id: fish.id,
+        lived: dayjs().diff(fish.createdAt, 'second'),
+        speedMultiplier: fish.speedMultiplier,
+        isDead: dayjs().isAfter(fish.diesAt),
+        colour: fish.colour,
+        type: fish.type,
+        sellPrice: fish.price,
+      })),
+    };
   }
 }

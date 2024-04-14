@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import { GradientButton } from '../components/GradientButton';
-import { register, login } from '../api';
 import { UserContext } from '../context/userContext';
 import { withAuthentication, auth } from '../hoc/protected';
 

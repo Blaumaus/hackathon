@@ -142,4 +142,16 @@ export class ShopController {
       money: user.money + fish.price,
     });
   }
+
+  @Get('aquarium-stats')
+  @UseGuards(JwtAccessTokenGuard)
+  async getAquariumStats(@CurrentUserId() uid: string) {
+    const user = await this.userService.findUserById(uid);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return await this.aquariumService.getAquariumStats();
+  }
 }

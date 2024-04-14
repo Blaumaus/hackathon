@@ -7,6 +7,7 @@ import { FisheriesEntity } from './entities/fisheries.entity';
 import { AquariumService } from 'src/aquarium/aquarium.service';
 import { Aquarium } from 'src/aquarium/entities/aquarium.entity';
 import { Fish } from 'src/aquarium/entities/fish.entity';
+import { User } from 'src/user/entity/user.entity';
 
 @Injectable()
 export class ShopService {
@@ -104,7 +105,8 @@ export class ShopService {
 
   async applyFishToAquarium(
     aquarium: Aquarium,
-    shopFish: FisheriesEntity,
+    shopFish?: FisheriesEntity,
+    user?: User,
   ): Promise<void> {
     const fish = new Fish();
     Object.assign(
@@ -113,6 +115,15 @@ export class ShopService {
     );
     fish.diesAt = this.aquariumService.generateDiesAt();
 
+    if (!aquarium) {
+      await this.aquariumService.save({
+        user: user,
+        happiness: 0.5,
+        hunger: 0.5,
+        cleanliness: 0.5,
+        fishes: [],
+      });
+    }
     aquarium.fishes.push(fish);
 
     await this.aquariumService.save(aquarium);
