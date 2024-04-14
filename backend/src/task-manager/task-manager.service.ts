@@ -73,20 +73,20 @@ export class TaskManagerService {
     });
   }
 
-  @Cron(CronExpression.EVERY_MINUTE)
+  @Cron(CronExpression.EVERY_30_SECONDS)
   async updateAquariumStatus(): Promise<void> {
     const aquariums = await this.aquariumService.find();
-
+    console.log(aquariums);
     const promises = [];
 
     for (let i = 0; i < aquariums.length; ++i) {
       const aquarium = aquariums[i];
 
-      promises.push(async () =>
+      promises.push(
         this.aquariumService.update(aquarium.id, {
           happiness: aquarium.happiness - _random(0, 0.03),
           cleanliness: aquarium.cleanliness - _random(0, 0.03),
-          hunger: aquarium.hunger - _random(0, 0.03),
+          hunger: aquarium.hunger - _random(0, 1),
         }),
       );
     }
@@ -104,7 +104,7 @@ export class TaskManagerService {
     for (let i = 0; i < users.length; ++i) {
       const user = users[i];
 
-      promises.push(async () =>
+      promises.push(
         this.userService.updateUser(user.id, {
           money: user.money + _random(5, 50),
         }),
