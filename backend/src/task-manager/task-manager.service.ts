@@ -14,12 +14,14 @@ import { ShopService } from 'src/shop/shop.service';
 import { In } from 'typeorm';
 import { AquariumBuffs } from 'src/shop/entities/aquariumBuffs.entity';
 import { AquariumService } from 'src/aquarium/aquarium.service';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class TaskManagerService {
   constructor(
     private readonly shopService: ShopService,
     private readonly aquariumService: AquariumService,
+    private readonly userService: UserService,
   ) {}
 
   @Cron(CronExpression.EVERY_5_MINUTES)
@@ -90,6 +92,25 @@ export class TaskManagerService {
     }
 
     // todo: maybe refactor this to create multiple fishes with 1 DB call (i.e. insert())
+    await Promise.all(promises);
+  }
+
+  @Cron(CronExpression.EVERY_30_SECONDS)
+  async giveUsersMoney(): Promise<void> {
+    const users = await this.userService.findAll();
+
+    const promises = [];
+
+    for (let i = 0; i < users.length; ++i) {
+      const user = users[i];
+
+      promises.push(async () =>
+        this.userService.updateUser(user.id, {
+          money: user.money + _random(5, 50),
+        }),
+      );
+    }
+
     await Promise.all(promises);
   }
 }
