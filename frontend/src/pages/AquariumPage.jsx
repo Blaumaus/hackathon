@@ -169,20 +169,22 @@ const AquariumPage = () => {
           </div>
         </div>
       </div>
-      <button className="btn btn-primary top-5 right-5" onClick={() => setIsFishShopOpen(true)}>
-        <FishIcon
-          className='w-12 h-12'
-          colour='red'
-        />
-        Магазин риб
-      </button>
-      <button className="btn btn-primary top-5 right-5" onClick={() => setIsConsumablesShopOpen(true)}>
-        <GiftIcon
-          className='w-12 h-12'
-          colour='text-red-600'
-        />
-        Магазин товарів
-      </button>
+      <div className="flex justify-center space-x-4 mt-4 top-5 right-5">
+        <button className="btn btn-primary" onClick={() => setIsFishShopOpen(true)}>
+          <FishIcon
+            className='w-12 h-12'
+            colour='red'
+          />
+          Магазин риб
+        </button>
+        <button className="btn btn-primary" onClick={() => setIsConsumablesShopOpen(true)}>
+          <GiftIcon
+            className='w-12 h-12'
+            colour='text-red-600'
+          />
+          Магазин товарів
+        </button>
+      </div>
 
       <Widget />
       <FishShopModal
