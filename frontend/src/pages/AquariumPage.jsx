@@ -154,8 +154,8 @@ const AquariumPage = () => {
         </button>
       </div>
       <div className="flex-grow w-full max-w-5xl mt-80">
-        <div className='flex items-end h-[480px] border-4 rounded-lg rounded-t-xl border-solid border-slate-800rounded-lg overflow-hidden'>
-            <div className="w-full h-3/4 animate-pulse opacity-[0.99] relative  bg-blue-300">
+        <div className='flex items-end h-[480px] border-4 rounded-t-xl border-solid border-slate-800 rounded-lg overflow-hidden'>
+            <div className="w-full h-3/4 animate-aquarium relative  bg-blue-300">
               {_map(fishes, (fish, index) => (
                 <Fish
                   key={fish.id}
