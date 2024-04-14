@@ -137,9 +137,9 @@ const AquariumPage = () => {
     <div className="flex flex-col items-center h-screen">
       <div className="p-8 mb-">
         <div className="flex flex-row space-x-8">
-        <StatusBar name="Чистота" color="bg-blue-500" percentage={auqriumStats.cleanliness} />
-        <StatusBar name="Голод" color="bg-yellow-500" percentage={auqriumStats.hunger} />
-        <StatusBar name="Щастя" color="bg-green-500" percentage={auqriumStats.happiness} />
+        <StatusBar name="Чистота" color="bg-blue-500" percentage={auqriumStats.cleanliness * 100} />
+        <StatusBar name="Голод" color="bg-yellow-500" percentage={auqriumStats.hunger * 100} />
+        <StatusBar name="Щастя" color="bg-green-500" percentage={auqriumStats.happiness * 100} />
       </div>
         <div className='flex items-end h-72 border border-solid border-slate-800 mt-6'>
           <div className="w-full h-5/6 bg-blue-300 animate-pulse opacity-60 relative">
