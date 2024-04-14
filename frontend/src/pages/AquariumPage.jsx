@@ -170,7 +170,21 @@ const AquariumPage = () => {
       </div>
 
       <Widget />
-      <FishShopModal close={() => setIsFishShopOpen(false)} isOpen={isFishShopOpen} />
+      <FishShopModal
+        close={() => setIsFishShopOpen(false)}
+        isOpen={isFishShopOpen}
+        fishes={fishes} 
+        onAction={async () => {
+          return getAquariumStats()
+            .then((response) => {
+              setAuqriumStats(response.aquariumStatus);
+              setFishes(response.fishes);
+            })
+            .catch((error) => {
+              console.error(error);
+            })
+        }}
+      />
       {isModalOpen && <InviteModal onClose={closeModal} />}
     </div>
   );

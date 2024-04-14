@@ -126,6 +126,16 @@ export const buyFish = (fishId) =>
         : error.response.data.message
     })
 
+export const sellFish = (fishId) =>
+  api
+    .delete(`v1/shop/fish/${fishId}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
 export const getAquariumStats = () =>
   api
     .get('v1/shop/aquarium-stats')

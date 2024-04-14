@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react';
 import cx from 'clsx'
-import { getShopFish, buyFish } from '../api';
+import { getShopFish, buyFish, sellFish } from '../api';
 import { FishIcon } from '../icons/FishIcon';
 
 const Fish = ({ fish, isSelected, onClick }) => {
@@ -15,19 +15,20 @@ const Fish = ({ fish, isSelected, onClick }) => {
         />
       </div>
       <span className='text-gray-900 text-lg'>
-        {`Ціна: ${fish.price}`}
+        {`Ціна: ${fish.sellPrice || fish.price}`}
       </span>
     </div>
   )
 }
 
-export const FishShopModal = ({ isOpen, close }) => {
+export const FishShopModal = ({ isOpen, close, fishes, onAction: _onAction }) => {
   const [fish, setFish] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedId, setSelectedId] = useState(null)
+  const [tab, setTab] = useState('buy') // buy, sell
 
   useEffect(() => {
-    if (!isOpen) {
+    if (!isOpen || tab === 'sell') {
       return
     }
 
@@ -43,10 +44,11 @@ export const FishShopModal = ({ isOpen, close }) => {
       .finally(() => {
         setLoading(false)
       })
-  }, [isOpen])
+  }, [isOpen, tab])
 
   const _close = () => {
     setSelectedId(null)
+    setTab('buy')
     close()
   }
 
@@ -64,7 +66,36 @@ export const FishShopModal = ({ isOpen, close }) => {
       return
     }
 
+    _onAction()
     _close()
+  }
+
+  const onSell = async () => {
+    if (!selectedId) {
+      alert('Будь ласка, виберіть рибу яку ви хочете продати')
+      return
+    }
+
+    try {
+      await sellFish(selectedId)
+    } catch (reason) {
+      console.error('[buyFish]:', reason)
+      alert(reason)
+      return
+    }
+
+    _onAction()
+    _close()
+  }
+
+  const onAction = async () => {
+    if (tab === 'buy') {
+      return onBuy()
+    }
+
+    if (tab === 'sell') {
+      return onSell()
+    }
   }
 
   return (
@@ -100,6 +131,30 @@ export const FishShopModal = ({ isOpen, close }) => {
                   >
                     Магазин риб
                   </Dialog.Title>
+
+                  <div className='flex space-x-1 rounded-xl bg-blue-900/20 p-1'>
+                    <div
+                      onClick={() => {
+                        setTab('buy')
+                        setSelectedId(null)
+                      }}
+                      role='button'
+                      className={cx('cursor-pointer w-full text-center rounded-lg py-2.5 text-sm font-medium leading-5 ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', tab === 'buy' ? 'bg-white text-blue-700 shadow' : 'text-blue-400 hover:bg-white/[0.12] hover:text-white')}
+                    >
+                      Купівля
+                    </div>
+                    <div
+                      onClick={() => {
+                        setTab('sell')
+                        setSelectedId(null)
+                      }}
+                      role='button'
+                      className={cx('cursor-pointer w-full text-center rounded-lg py-2.5 text-sm font-medium leading-5 ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', tab === 'sell' ? 'bg-white text-blue-700 shadow' : 'text-blue-400 hover:bg-white/[0.12] hover:text-white')}
+                    >
+                      Продаж
+                    </div>
+                  </div>
+
                   {loading ? (
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
@@ -108,7 +163,7 @@ export const FishShopModal = ({ isOpen, close }) => {
                     </div>
                   ) : (
                     <div className="mt-2 space-y-4">
-                      {fish?.length > 0 ? fish.map((_fish) => (
+                      {tab === 'buy' && fish?.length > 0 && fish.map((_fish) => (
                         <Fish
                           fish={_fish}
                           key={_fish.id}
@@ -117,11 +172,17 @@ export const FishShopModal = ({ isOpen, close }) => {
                             setSelectedId(_fish.id)
                           }}
                         />
-                      )) : (
-                        <span className='text-gray-900'>
-                          Поки що немає риби на продаж...
-                        </span>
-                      )}
+                      ))}
+                      {tab === 'sell' && fishes?.length > 0 && fishes.map((_fish) => (
+                        <Fish
+                          fish={_fish}
+                          key={_fish.id}
+                          isSelected={selectedId === _fish.id} 
+                          onClick={() => {
+                            setSelectedId(_fish.id)
+                          }}
+                        />
+                      ))}
                     </div>
                   )}
 
@@ -129,9 +190,9 @@ export const FishShopModal = ({ isOpen, close }) => {
                     <button
                       type="button"
                       className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={onBuy}
+                      onClick={onAction}
                     >
-                      Купити рибку :)
+                      {tab === 'buy' ? 'Купити рибку :)' : 'Продати рибку :)'}
                     </button>
                   </div>
                 </Dialog.Panel>
