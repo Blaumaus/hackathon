@@ -7,6 +7,7 @@ import { ActionTokensModule } from 'src/action-tokens/action-tokens.module';
 import { JwtAccessTokenStrategy } from './strategies/jwt-access-token.strategy';
 import { JwtRefreshTokenStrategy } from './strategies/jwt-refresh-token.strategy';
 import { PassportModule } from '@nestjs/passport';
+import { ShopModule } from 'src/shop/shop.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { PassportModule } from '@nestjs/passport';
       signOptions: { expiresIn: '2h' },
     }),
     PassportModule,
+    ShopModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtAccessTokenStrategy, JwtRefreshTokenStrategy],

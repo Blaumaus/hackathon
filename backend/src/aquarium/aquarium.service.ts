@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Aquarium } from './entities/aquarium.entity';
 import { Fish } from './entities/fish.entity';
-import dayjs from 'dayjs';
+import * as dayjs from 'dayjs';
 
 @Injectable()
 export class AquariumService {
@@ -47,9 +47,10 @@ export class AquariumService {
   }
 
   async getAquariumStats() {
-    const aquarium = await this.aquariumRepository.find({
+    const res = await this.aquariumRepository.find({
       relations: ['fishes'],
-    })[0];
+    });
+    const aquarium = res[0];
 
     if (!aquarium) {
       return null;

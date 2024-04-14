@@ -121,8 +121,9 @@ export class ShopService {
         happiness: 0.5,
         hunger: 0.5,
         cleanliness: 0.5,
-        fishes: [],
+        fishes: [fish],
       });
+      return;
     }
     aquarium.fishes.push(fish);
 
