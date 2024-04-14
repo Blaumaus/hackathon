@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react';
 import cx from 'clsx'
-import { getShopFish } from '../api';
+import { getShopFish, buyFish } from '../api';
 import { FishIcon } from '../icons/FishIcon';
 
 const Fish = ({ fish, isSelected, onClick }) => {
@@ -50,11 +50,22 @@ export const FishShopModal = ({ isOpen, close }) => {
     close()
   }
 
-  const onBuy = () => {
+  const onBuy = async () => {
+    if (!selectedId) {
+      alert('Будь ласка, виберіть рибу яку ви хочете купити')
+      return
+    }
+
+    try {
+      await buyFish(selectedId)
+    } catch (reason) {
+      console.error('[buyFish]:', reason)
+      alert(reason)
+      return
+    }
+
     _close()
   }
-
-  console.log('fishes:', fish)
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
