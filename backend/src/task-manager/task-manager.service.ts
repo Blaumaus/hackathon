@@ -76,7 +76,6 @@ export class TaskManagerService {
   @Cron(CronExpression.EVERY_30_SECONDS)
   async updateAquariumStatus(): Promise<void> {
     const aquariums = await this.aquariumService.find();
-    console.log(aquariums);
     const promises = [];
 
     for (let i = 0; i < aquariums.length; ++i) {
