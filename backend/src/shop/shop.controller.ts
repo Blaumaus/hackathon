@@ -76,6 +76,8 @@ export class ShopController {
     });
 
     await this.shopService.applyConsumableToAquarium(user.aquarium, consumable);
+
+    await this.shopService.deleteBuff(consumable.id);
   }
 
   // Buy a consumable
@@ -113,6 +115,8 @@ export class ShopController {
     });
 
     await this.shopService.applyFishToAquarium(user.aquarium, fish, user);
+
+    await this.shopService.deleteFishery(fish.id);
   }
 
   // Sell a fish
