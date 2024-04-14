@@ -82,11 +82,15 @@ export class TaskManagerService {
     for (let i = 0; i < aquariums.length; ++i) {
       const aquarium = aquariums[i];
 
+      const happiness = aquarium.happiness + _random(0, 0.03);
+      const cleanliness = aquarium.cleanliness + _random(0, 0.03);
+      const hunger = aquarium.hunger + _random(0, 1);
+
       promises.push(
         this.aquariumService.update(aquarium.id, {
-          happiness: aquarium.happiness - _random(0, 0.03),
-          cleanliness: aquarium.cleanliness - _random(0, 0.03),
-          hunger: aquarium.hunger - _random(0, 1),
+          happiness: happiness < 0 ? 0 : happiness,
+          cleanliness: cleanliness < 0 ? 0 : cleanliness,
+          hunger: hunger < 0 ? 0 : hunger,
         }),
       );
     }
