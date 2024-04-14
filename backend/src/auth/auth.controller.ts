@@ -69,10 +69,9 @@ export class AuthController {
       fishes.push(fish);
     }
 
-    await this.shopService.applyFishToAquarium({
-      aquarium: null,
-      fishes: [],
-    });
+    await this.shopService.applyFishToAquarium(null, fishes[0], newUser);
+    await this.shopService.applyFishToAquarium(null, fishes[1], newUser);
+    await this.shopService.applyFishToAquarium(null, fishes[2], newUser);
 
     return {
       ...jwtTokens,
