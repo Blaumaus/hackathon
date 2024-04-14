@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import InviteModal from '../components/InviteModal';
 import StatusBar from '../components/StatusBar';
+import { UserContext } from '../context/userContext'
 import cx from 'clsx'
 import { Widget } from '../components/RobotWidget';
-import { GiftIcon } from '@heroicons/react/24/outline';
+import { GiftIcon, BanknotesIcon } from '@heroicons/react/24/outline';
 import { FishIcon } from '../icons/FishIcon';
 import { auth, withAuthentication } from '../hoc/protected';
 import { getAquariumStats } from '../api';
@@ -97,6 +98,7 @@ const Fish = ({ fish, colour, yShift, xDelta, dead }) => {
 };
 
 const AquariumPage = () => {
+  const { user } = useContext(UserContext)
   const [auqriumStats, setAuqriumStats] = useState({
     cleanliness: 0,
     happiness: 0,
@@ -143,6 +145,12 @@ const AquariumPage = () => {
           <StatusBar name="Чистота" color="bg-blue-500" percentage={auqriumStats.cleanliness * 100} />
           <StatusBar name="Голод" color="bg-yellow-500" percentage={auqriumStats.hunger * 100} />
           <StatusBar name="Щастя" color="bg-green-500" percentage={auqriumStats.happiness * 100} />
+          <div className="flex items-center space-x-4 text-gray-50">
+            <BanknotesIcon className='w-6 h-6' />
+            <span>
+              {`Гроші: ${user?.money || 'N/A'}`}
+            </span>
+          </div>
         </div>
       </div>
 
