@@ -16,7 +16,7 @@ const Fish = ({ fish, colour, yShift, xDelta, dead }) => {
   const [yPosition, setYPosition] = useState(dead ? -5 : 5);
   const yDirection = useRef(1);
   const requestId = useRef(null);
-  const xSpeed = 0.5;
+  const xSpeed = 0.5 * fish.speedMultiplier;
   const ySpeed = 0.2;
 
   useEffect(() => {
@@ -143,14 +143,14 @@ const AquariumPage = () => {
       </div>
         <div className='flex items-end h-72 border border-solid border-slate-800 mt-6'>
           <div className="w-full h-5/6 bg-blue-300 animate-pulse opacity-60 relative">
-            {_map(fishes,(fish) => (
+            {_map(fishes,(fish, index) => (
               <Fish
                 key={fish.id}
                 fish={fish}
                 colour={fish.colour}
-                yShift={fish.speedMultiplier / 2}
-                xDelta={fish.speedMultiplier}
-                dead={fish.isDead}
+                yShift={(index + 40) * fish.speedMultiplier}
+                xDelta={index + 5}
+                // dead={fish.isDead}
               />
             ))}
           </div>
