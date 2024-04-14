@@ -14,7 +14,7 @@ export class AquariumService {
     private fishRepository: Repository<Fish>,
   ) {}
 
-  async save(aquarium: Aquarium): Promise<any> {
+  async save(aquarium: Omit<Aquarium, 'id'>): Promise<Aquarium> {
     return this.aquariumRepository.save(aquarium);
   }
 
