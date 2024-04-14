@@ -104,7 +104,7 @@ export class ShopService {
   }
 
   async applyFishToAquarium(
-    aquarium: Aquarium,
+    aquarium: Aquarium | null,
     shopFish?: FisheriesEntity,
     user?: User,
   ): Promise<void> {
