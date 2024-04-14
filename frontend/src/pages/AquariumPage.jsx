@@ -138,8 +138,8 @@ const AquariumPage = () => {
 
   return (
     <div className="flex flex-col items-center h-screen bg-no-repeat bg-cover" style={{ backgroundImage: 'url("/assets/table.png")' }}>
-      <div className="absolute top-4 left-4 bg-white bg-opacity-80 p-4 rounded-lg shadow-lg z-10">
-        <div className="flex flex-col space-y-2 text-gray-800">
+      <div className="absolute top-4 left-4 bg-purple-500 bg-opacity-40 shadow-2xl p-4 rounded-lg z-10">
+        <div className="flex flex-col space-y-2 text-gray-200">
           <StatusBar name="Чистота" color="bg-blue-500" percentage={auqriumStats.cleanliness * 100} />
           <StatusBar name="Голод" color="bg-yellow-500" percentage={auqriumStats.hunger * 100} />
           <StatusBar name="Щастя" color="bg-green-500" percentage={auqriumStats.happiness * 100} />
@@ -154,18 +154,18 @@ const AquariumPage = () => {
         </button>
       </div>
       <div className="flex-grow w-full max-w-5xl mt-80">
-        <div className='flex items-end h-[480px] border border-solid border-slate-800 bg-blue-300 rounded-lg overflow-hidden'>
-          <div className="w-full h-3/4 animate-pulse opacity-60 relative">
-            {_map(fishes, (fish, index) => (
-              <Fish
-                key={fish.id}
-                fish={fish}
-                colour={fish.colour}
-                yShift={(index + 40) * fish.speedMultiplier}
-                xDelta={index + 5}
-              // dead={fish.isDead}
-              />
-            ))}
+        <div className='flex items-end h-[480px] border-4 rounded-lg rounded-t-xl border-solid border-slate-800rounded-lg overflow-hidden'>
+            <div className="w-full h-3/4 animate-pulse opacity-[0.99] relative  bg-blue-300">
+              {_map(fishes, (fish, index) => (
+                <Fish
+                  key={fish.id}
+                  fish={fish}
+                  colour={fish.colour}
+                  yShift={(index + 40) * fish.speedMultiplier}
+                  xDelta={index + 5}
+                  dead={fish.isDead}
+                />
+              ))}
           </div>
         </div>
       </div>
