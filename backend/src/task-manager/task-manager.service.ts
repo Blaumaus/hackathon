@@ -120,7 +120,9 @@ export class TaskManagerService {
 
   @Cron(CronExpression.EVERY_5_MINUTES)
   async killFishes(): Promise<void> {
-    const aquariums = await this.aquariumService.find();
+    const aquariums = await this.aquariumService.find({
+      relations: ['fishes'],
+    });
 
     const promises = [];
 
