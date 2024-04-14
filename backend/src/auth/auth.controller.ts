@@ -59,7 +59,7 @@ export class AuthController {
     const jwtTokens = await this.authService.generateJwtTokens(newUser.id);
 
     const fishes = [];
-    for (let i = 0; i < 3; ++i) {
+    for (let i = 0; i < 1; ++i) {
       const fish = new FisheriesEntity();
       fish.colour = _sample(COLOURS);
       fish.type = _sample(TYPES);
@@ -70,8 +70,6 @@ export class AuthController {
     }
 
     await this.shopService.applyFishToAquarium(null, fishes[0], newUser);
-    await this.shopService.applyFishToAquarium(null, fishes[1], newUser);
-    await this.shopService.applyFishToAquarium(null, fishes[2], newUser);
 
     return {
       ...jwtTokens,
