@@ -1,6 +1,6 @@
 import { isDevelopment } from '../constants'
 
-const COOKIE_DOMAIN = 'localhost'
+const COOKIE_DOMAIN = 'hackathon-sage-eight.vercel.app'
 
 const COOKIE_SUFFIX = isDevelopment ? '' : `; domain=${COOKIE_DOMAIN}; secure`
 
