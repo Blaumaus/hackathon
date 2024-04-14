@@ -114,6 +114,28 @@ export const getShopFish = () =>
         : error.response.data.message
     })
 
+export const getShopConsumables = () =>
+  api
+    .get('v1/shop/consumables')
+    .then((response) => response.data)
+    .catch((error) => {
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
+export const buyConsumable = (consumableId) =>
+  api
+    .post('v1/shop/consumables', {
+      consumableId,
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
 export const buyFish = (fishId) =>
   api
     .post('v1/shop/fish', {

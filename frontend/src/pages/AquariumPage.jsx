@@ -3,12 +3,14 @@ import InviteModal from '../components/InviteModal';
 import StatusBar from '../components/StatusBar';
 import cx from 'clsx'
 import { Widget } from '../components/RobotWidget';
+import { GiftIcon } from '@heroicons/react/24/outline';
 import { FishIcon } from '../icons/FishIcon';
 import { auth, withAuthentication } from '../hoc/protected';
 import { getAquariumStats } from '../api';
 import _map from 'lodash/map';
 
 import { FishShopModal } from '../components/FishShopModal';
+import { ConsumablesShopModal } from '../components/ConsumablesShopModal';
 
 const Fish = ({ fish, colour, yShift, xDelta, dead }) => {
   const [xPosition, setXPosition] = useState(3 + xDelta);
@@ -124,6 +126,7 @@ const AquariumPage = () => {
   }, []);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFishShopOpen, setIsFishShopOpen] = useState(false);
+  const [isConsumablesShopOpen, setIsConsumablesShopOpen] = useState(false);
 
   const handleInviteClick = () => {
     setIsModalOpen(true);
@@ -173,12 +176,33 @@ const AquariumPage = () => {
         />
         Магазин риб
       </button>
+      <button className="btn btn-primary top-5 right-5" onClick={() => setIsConsumablesShopOpen(true)}>
+        <GiftIcon
+          className='w-12 h-12'
+          colour='text-red-600'
+        />
+        Магазин товарів
+      </button>
 
       <Widget />
       <FishShopModal
         close={() => setIsFishShopOpen(false)}
         isOpen={isFishShopOpen}
         fishes={fishes} 
+        onAction={async () => {
+          return getAquariumStats()
+            .then((response) => {
+              setAuqriumStats(response.aquariumStatus);
+              setFishes(response.fishes);
+            })
+            .catch((error) => {
+              console.error(error);
+            })
+        }}
+      />
+      <ConsumablesShopModal
+        close={() => setIsConsumablesShopOpen(false)}
+        isOpen={isConsumablesShopOpen}
         onAction={async () => {
           return getAquariumStats()
             .then((response) => {
