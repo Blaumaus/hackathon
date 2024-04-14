@@ -125,6 +125,7 @@ export class ShopService {
       });
       return;
     }
+
     aquarium.fishes.push(fish);
 
     await this.aquariumService.save(aquarium);

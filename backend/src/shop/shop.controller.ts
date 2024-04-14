@@ -85,7 +85,10 @@ export class ShopController {
     @CurrentUserId() uid: string,
     @Body() body: BuyFishDto,
   ): Promise<void> {
-    const user = await this.userService.findUserById(uid);
+    const user = await this.userService.findUserById(uid, [
+      'aquarium',
+      'aquarium.fishes',
+    ]);
 
     if (!user) {
       throw new NotFoundException('User not found');
@@ -109,7 +112,7 @@ export class ShopController {
       money: user.money - fish.price,
     });
 
-    await this.shopService.applyFishToAquarium(user.aquarium, fish);
+    await this.shopService.applyFishToAquarium(user.aquarium, fish, user);
   }
 
   // Sell a fish
