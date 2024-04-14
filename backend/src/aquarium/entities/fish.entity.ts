@@ -38,7 +38,7 @@ export class Fish {
   speedMultiplier: number;
 
   @Column({
-    type: 'date',
+    type: 'datetime',
     nullable: false,
   })
   diesAt: Date;
