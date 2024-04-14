@@ -14,9 +14,9 @@ const StatusBar = ({ name, percentage }) => {
   const progressWidth = `${percentage}%`;
 
   return (
-    <div className="flex justify-center items-center space-x-4">
-      <div className="text-lg">{name}</div>
-      <div className='border border-black w-24 h-6 rounded-full relative overflow-hidden bg-white'>
+    <div className="flex justify-between items-center space-x-4">
+      <div className="text-lg font-bold">{name}</div>
+      <div className='border-2 border-black w-[220px] h-2 rounded-full relative overflow-hidden bg-white'>
         <div style={{ width: progressWidth }} className={cx("h-full", colorClass)}></div>
       </div>
     </div>

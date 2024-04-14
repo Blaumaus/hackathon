@@ -15,6 +15,7 @@ import { In } from 'typeorm';
 import { AquariumBuffs } from 'src/shop/entities/aquariumBuffs.entity';
 import { AquariumService } from 'src/aquarium/aquarium.service';
 import { UserService } from 'src/user/user.service';
+import * as dayjs from 'dayjs';
 
 @Injectable()
 export class TaskManagerService {
@@ -108,6 +109,27 @@ export class TaskManagerService {
           money: user.money + _random(5, 50),
         }),
       );
+    }
+
+    await Promise.all(promises);
+  }
+
+  @Cron(CronExpression.EVERY_5_MINUTES)
+  async killFishes(): Promise<void> {
+    const aquariums = await this.aquariumService.find();
+
+    const promises = [];
+
+    for (let i = 0; i < aquariums.length; ++i) {
+      const aquarium = aquariums[i];
+
+      for (let j = 0; j < aquarium.fishes.length; ++j) {
+        const fish = aquarium.fishes[j];
+
+        if (dayjs().isAfter(dayjs(fish.diesAt).add(5, 'minute'))) {
+          promises.push(this.aquariumService.deleteFish(fish.id));
+        }
+      }
     }
 
     await Promise.all(promises);
