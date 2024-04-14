@@ -26,6 +26,10 @@ export class AquariumService {
     return this.aquariumRepository.find(criteria);
   }
 
+  async findOne(criteria: any): Promise<Aquarium> {
+    return this.aquariumRepository.findOne(criteria);
+  }
+
   async findById(id: string, relations = ['fishes']): Promise<Aquarium> {
     return this.aquariumRepository.findOne({
       where: { id },
