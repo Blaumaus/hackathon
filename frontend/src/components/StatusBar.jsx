@@ -11,7 +11,7 @@ const StatusBar = ({ name, percentage }) => {
     colorClass = 'bg-green-500'; 
   }
 
-  const progressWidth = `${percentage}%`;
+  const progressWidth = `${percentage}%`g;
 
   return (
     <div className="flex justify-center items-center space-x-4">
