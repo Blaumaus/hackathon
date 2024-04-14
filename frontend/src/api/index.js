@@ -114,6 +114,18 @@ export const getShopFish = () =>
         : error.response.data.message
     })
 
+export const buyFish = (fishId) =>
+  api
+    .post('v1/shop/fish', {
+      fishId,
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      throw _isEmpty(error.response.data?.message)
+        ? error.response.data
+        : error.response.data.message
+    })
+
 export const getAquariumStats = () =>
   api
     .get('v1/shop/aquarium-stats')
