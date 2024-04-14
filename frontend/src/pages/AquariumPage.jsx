@@ -26,11 +26,11 @@ const Fish = ({ fish, colour, yShift, xDelta, dead }) => {
           if (prevPosition >= -5) {
             yDirection.current = -1;
           }
-  
+
           if (prevPosition <= -8) {
             yDirection.current = 1;
           }
-  
+
           return prevPosition + yDirection.current * 0.05
         });
       } else {
@@ -38,23 +38,23 @@ const Fish = ({ fish, colour, yShift, xDelta, dead }) => {
           if (prevPosition >= 90) {
             xDirection.current = -1;
           }
-  
+
           if (prevPosition <= 3) {
             xDirection.current = 1;
           }
-  
+
           return prevPosition + xDirection.current * xSpeed
         });
-  
+
         setYPosition(prevPosition => {
           if (prevPosition >= 20) {
             yDirection.current = -1;
           }
-  
+
           if (prevPosition <= 5) {
             yDirection.current = 1;
           }
-  
+
           return prevPosition + yDirection.current * ySpeed
         });
       }
@@ -134,40 +134,45 @@ const AquariumPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center h-screen">
-      <div className="p-8 mb-">
-        <div className="flex flex-row space-x-8">
-        <StatusBar name="Чистота" color="bg-blue-500" percentage={auqriumStats.cleanliness * 100} />
-        <StatusBar name="Голод" color="bg-yellow-500" percentage={auqriumStats.hunger * 100} />
-        <StatusBar name="Щастя" color="bg-green-500" percentage={auqriumStats.happiness * 100} />
+    <div className="flex flex-col items-center h-screen bg-no-repeat bg-cover" style={{ backgroundImage: 'url("/assets/table.jpg")' }}>
+      <div className="absolute top-4 left-4 bg-white bg-opacity-80 p-4 rounded-lg shadow-lg z-10">
+        <div className="flex flex-col space-y-2 text-gray-800">
+          <StatusBar name="Чистота" color="bg-blue-500" percentage={auqriumStats.cleanliness * 100} />
+          <StatusBar name="Голод" color="bg-yellow-500" percentage={auqriumStats.hunger * 100} />
+          <StatusBar name="Щастя" color="bg-green-500" percentage={auqriumStats.happiness * 100} />
+        </div>
       </div>
-        <div className='flex items-end h-72 border border-solid border-slate-800 mt-6'>
-          <div className="w-full h-5/6 bg-blue-300 animate-pulse opacity-60 relative">
-            {_map(fishes,(fish, index) => (
+
+      <div className="absolute top-4 right-4 z-10">
+        <button className="btn btn-primary shadow-lg hover:shadow-xl transition-shadow duration-300" onClick={handleInviteClick}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+          </svg>
+        </button>
+      </div>
+      <div className="flex-grow w-full max-w-5xl mt-80">
+        <div className='flex items-end h-96 border border-solid border-slate-800 bg-blue-300 rounded-lg overflow-hidden'>
+          <div className="w-full h-3/4 animate-pulse opacity-60 relative">
+            {_map(fishes, (fish, index) => (
               <Fish
                 key={fish.id}
                 fish={fish}
                 colour={fish.colour}
                 yShift={(index + 40) * fish.speedMultiplier}
                 xDelta={index + 5}
-                // dead={fish.isDead}
+              // dead={fish.isDead}
               />
             ))}
           </div>
         </div>
-        <button className="btn btn-primary absolute top-5 right-5" onClick={handleInviteClick}>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
-          </svg>
-        </button>
-        <button className="btn btn-primary top-5 right-5" onClick={() => setIsFishShopOpen(true)}>
-          <FishIcon
-            className='w-12 h-12'
-            colour='red'
-          />
-          Магазин риб
-        </button>
       </div>
+      <button className="btn btn-primary top-5 right-5" onClick={() => setIsFishShopOpen(true)}>
+        <FishIcon
+          className='w-12 h-12'
+          colour='red'
+        />
+        Магазин риб
+      </button>
 
       <Widget />
       <FishShopModal close={() => setIsFishShopOpen(false)} isOpen={isFishShopOpen} />
