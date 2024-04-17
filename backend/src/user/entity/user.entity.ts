@@ -21,7 +21,7 @@ export class User {
 
   @Column({
     type: 'integer',
-    default: 50,
+    default: 250,
   })
   money: number;
 

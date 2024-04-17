@@ -91,8 +91,12 @@ export class ShopService {
     aquarium: Aquarium,
     consumable: AquariumBuffs,
   ): Promise<void> {
-    let buff =
-      aquarium[consumable.type] + aquarium[consumable.type] * consumable.buff;
+    const add =
+      aquarium[consumable.type] <= 0
+        ? consumable.buff
+        : aquarium[consumable.type] * consumable.buff;
+
+    let buff = aquarium[consumable.type] + add;
 
     if (buff > 1) {
       buff = 1;
@@ -127,6 +131,8 @@ export class ShopService {
     }
 
     aquarium.fishes.push(fish);
+
+    console.log('aquarium:', aquarium);
 
     await this.aquariumService.save(aquarium);
   }

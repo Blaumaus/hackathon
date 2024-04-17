@@ -11,7 +11,7 @@ import {
 import { TYPES as CONSUMABLE_TYPES } from 'src/shop/entities/aquariumBuffs.entity';
 
 import { ShopService } from 'src/shop/shop.service';
-import { In } from 'typeorm';
+import { In, LessThan } from 'typeorm';
 import { AquariumBuffs } from 'src/shop/entities/aquariumBuffs.entity';
 import { AquariumService } from 'src/aquarium/aquarium.service';
 import { UserService } from 'src/user/user.service';
@@ -82,9 +82,9 @@ export class TaskManagerService {
     for (let i = 0; i < aquariums.length; ++i) {
       const aquarium = aquariums[i];
 
-      const happiness = aquarium.happiness + _random(0, 0.03);
-      const cleanliness = aquarium.cleanliness + _random(0, 0.03);
-      const hunger = aquarium.hunger + _random(0, 1);
+      const happiness = aquarium.happiness - _random(0, 0.03);
+      const cleanliness = aquarium.cleanliness - _random(0, 0.03);
+      const hunger = aquarium.hunger - _random(0, 0.08);
 
       promises.push(
         this.aquariumService.update(aquarium.id, {
@@ -139,5 +139,38 @@ export class TaskManagerService {
     }
 
     await Promise.all(promises);
+  }
+
+  @Cron(CronExpression.EVERY_MINUTE)
+  async killFishesBecauseOfDirtyAssAquarium(): Promise<void> {
+    const aquariums = await this.aquariumService.find({
+      relations: ['fishes'],
+      where: [
+        {
+          happiness: LessThan(0.1),
+        },
+        {
+          hunger: LessThan(0.1),
+        },
+        {
+          cleanliness: LessThan(0.1),
+        },
+      ],
+    });
+
+    for (let i = 0; i < aquariums.length; ++i) {
+      const aquarium = aquariums[i];
+      const randomFish = _sample(aquarium.fishes);
+
+      console.log('randomFish:', randomFish);
+
+      if (!randomFish) {
+        continue;
+      }
+
+      await this.aquariumService.updateFish(randomFish.id, {
+        diesAt: new Date(),
+      });
+    }
   }
 }

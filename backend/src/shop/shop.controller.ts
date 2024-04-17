@@ -60,14 +60,14 @@ export class ShopController {
     });
 
     if (!consumable) {
-      throw new NotFoundException('Selected consumable does not exist');
+      throw new NotFoundException('Вибраний товар не існує');
     }
 
     if (user.money < consumable.price) {
       throw new ForbiddenException(
-        `You need ${
+        `Вам потрібно на ${
           consumable.price - user.money
-        } more money to buy this consumable`,
+        } більше грошей щоб купити цей товар`,
       );
     }
 
@@ -101,12 +101,14 @@ export class ShopController {
     });
 
     if (!fish) {
-      throw new NotFoundException('Selected fish does not exist');
+      throw new NotFoundException('Вибрана риба не існує');
     }
 
     if (user.money < fish.price) {
       throw new ForbiddenException(
-        `You need ${fish.price - user.money} more money to buy this fish`,
+        `Вам потрібно на ${
+          fish.price - user.money
+        } більше грошей щоб купити цю рибу`,
       );
     }
 
@@ -159,6 +161,6 @@ export class ShopController {
       throw new NotFoundException('User not found');
     }
 
-    return await this.aquariumService.getAquariumStats();
+    return await this.aquariumService.getAquariumStats(uid);
   }
 }

@@ -41,6 +41,10 @@ export class AquariumService {
     return this.fishRepository.delete(id);
   }
 
+  async updateFish(criteria: any, update: Partial<Fish>): Promise<any> {
+    return this.fishRepository.update(criteria, update);
+  }
+
   generateDiesAt(): any {
     const now = new Date();
     const minTime = now.getTime() + 30 * 60 * 1000; // 30 minutes from now in milliseconds
@@ -50,9 +54,14 @@ export class AquariumService {
     return new Date(randomTime);
   }
 
-  async getAquariumStats() {
+  async getAquariumStats(userId) {
     const res = await this.aquariumRepository.find({
-      relations: ['fishes'],
+      relations: ['fishes', 'user'],
+      where: {
+        user: {
+          id: userId,
+        },
+      },
     });
     const aquarium = res[0];
 
